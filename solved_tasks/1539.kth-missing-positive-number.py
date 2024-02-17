@@ -15,6 +15,7 @@ class Solution:
                 return num - (missed_amount - k + 1)
             prev = num
 
+
 def main():
     s = Solution()
     print(s.findKthPositive([2, 3, 4, 7, 11], 5))
