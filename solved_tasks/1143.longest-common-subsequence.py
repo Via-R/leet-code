@@ -1,16 +1,18 @@
-from functools import cache
-
-
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
-        @cache
+        dp = [[-1] * len(text2) for _ in range(len(text1))]
+
         def rec(idx1, idx2):
             if idx1 >= len(text1) or idx2 >= len(text2):
                 return 0
+            if dp[idx1][idx2] != -1:
+                return dp[idx1][idx2]
             if text1[idx1] == text2[idx2]:
-                return 1 + rec(idx1 + 1, idx2 + 1)
+                dp[idx1][idx2] = 1 + rec(idx1 + 1, idx2 + 1)
+                return dp[idx1][idx2]
 
-            return max(rec(idx1 + 1, idx2), rec(idx1, idx2 + 1))
+            dp[idx1][idx2] = max(rec(idx1 + 1, idx2), rec(idx1, idx2 + 1))
+            return dp[idx1][idx2]
 
         return rec(0, 0)
 
@@ -20,6 +22,7 @@ def main():
     print(s.longestCommonSubsequence('abcde', 'ace'))
     print(s.longestCommonSubsequence('abc', 'abc'))
     print(s.longestCommonSubsequence('abc', 'def'))
+    print(s.longestCommonSubsequence('bl', 'yby'))
     print(s.longestCommonSubsequence(
         "fnbeaucuyhgariizanpxffiiicvjcynwcvlqyvobxvmqpqelcqrdvggecbwrhrwyqbgafyrnmwqrbtugykagycteuusvkpthokeiqddumbgwzechfyxrqxwfzmcpkewebbhaowqjalzqpkwzfyymttnatmczxbnmydnzfongvdokxjwibilpitdxfwavtkftdenrzsktqlsptsccttizehxvellkmqnomfynnptzcwseragirexubilbnxddsmmwufhcijrsdmecixjbahrhhkrekuqqcdghnljlazvvvtziqaimkfqignlmmfzujeboaqqeswjseozaspgpbedwwheshjettreroubajeaqfbrzlpehcnurcdeimkofesjgcmtqrdjwvsuagtszyxaqmctdusuyjdlwedsjrdpnsdizoflilgvkjdbdxhqtnguqjzkjknpbvawoywklsfvnlkhlfmvbanxtypouejervclgkinohleenbsrvddvhjeelokbtuikrfilyyerqamcanglbdihfffociwoloifuipddpnccwzlpqblpohjstiygligyibclnewnhgdjjatspmtphgddgyfdpizyengteffdwrkswjwuznebeougvojdzzztaallammgskuzrjhwxonzogekpderhzdehbzgcxgveaxiyrptakpblbsmmuwwmtmiezgghvesvqtgdiazzkboitidoeeookdfvgcujpvixvzzzakbwkynicutzowvzfspxfkndfvodvpwadlrvswalmpdhllilhmofyoyaxhncjmhqghadfajienejnihwniubbajajyzpxvuraorjnkgonjvnmdboujfyoimsqdfebutbjcqgvdkkgczzwruinxsltspempsvclpzgqwybsquxubmvzygkpabvkchieqtvqdocjpufcmojehiwdnmvzgrsfgiwqmiahmozjzqzzfzrtxnqistceggdm",
         "vfkfjkpuyo"))
