@@ -1,18 +1,9 @@
+from functools import cache
+
+
 class Solution:
     def minInsertions(self, s: str) -> int:
-        def make_memo_rec(rec):
-            memo = {}
-
-            def memo_rec(*args):
-                if args in memo:
-                    return memo[args]
-                new_result = rec(*args)
-                memo[args] = new_result
-                return new_result
-
-            return memo_rec
-
-        @make_memo_rec
+        @cache
         def rec(start_idx, end_idx):
             if start_idx >= end_idx:
                 return 0
