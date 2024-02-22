@@ -1,31 +1,26 @@
 class Solution:
     def minInsertions(self, s: str) -> int:
-        middle_idx = round(len(s) / 2)
-        left_dict = {}
-        right_dict = {}
-        odd_len_shift = len(s) % 2
+        def make_memo_rec(rec):
+            memo = {}
 
-        for idx in range(middle_idx):
-            left_dict.setdefault(s[idx], 0)
-            left_dict[s[idx]] += 1
-        for idx in range(middle_idx + odd_len_shift, len(s)):
-            right_dict.setdefault(s[idx], 0)
-            right_dict[s[idx]] += 1
+            def memo_rec(*args):
+                if args in memo:
+                    return memo[args]
+                new_result = rec(*args)
+                memo[args] = new_result
+                return new_result
 
-        left_letters, right_letters = set(left_dict.keys()), set(right_dict.keys())
-        only_left_letters = left_letters - right_letters
-        only_right_letters = right_letters - left_letters
-        common_letters = left_letters.intersection(right_letters)
+            return memo_rec
 
-        result = 0
-        for l in list(only_left_letters):
-            result += left_dict[l]
-        for l in list(only_right_letters):
-            result += right_dict[l]
-        for l in list(common_letters):
-            result += abs(left_dict[l] - right_dict[l])
+        @make_memo_rec
+        def rec(start_idx, end_idx):
+            if start_idx >= end_idx:
+                return 0
+            if s[start_idx] == s[end_idx]:
+                return rec(start_idx + 1, end_idx - 1)
+            return 1 + min(rec(start_idx, end_idx - 1), rec(start_idx + 1, end_idx))
 
-        return (result - 1) if len(s) % 2 == 0 else result
+        return rec(0, len(s) - 1)
 
 
 def main():
@@ -34,6 +29,7 @@ def main():
     print(s.minInsertions('mbadm'))
     print(s.minInsertions('leetcode'))
     print(s.minInsertions("zjveiiwvc"))
+    print(s.minInsertions("tldjbqjdogipebqsohdypcxjqkrqltpgviqtqz"))
 
 
 if __name__ == "__main__":
