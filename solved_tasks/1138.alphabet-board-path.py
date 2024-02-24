@@ -1,8 +1,9 @@
 from math import copysign
 from functools import cache
+from solutions_base.core import SolutionBase, SolutionTesting
 
 
-class Solution:
+class Solution(SolutionBase):
     def alphabetBoardPath(self, target: str) -> str:
         start_idx = ord('a')
         row_len = 5
@@ -35,13 +36,15 @@ class Solution:
 
         return path
 
+    solver = alphabetBoardPath
+    test_cases = [('leet',), ('code',), ('zb',), ('zbz',)]
+    test_cases_answers = [('RDD!RRRUU!!DDD!',), ('RR!RRDD!LUU!R!',), ('DDDDD!UUUUUR!',), ('DDDDD!UUUUUR!LDDDDD!',)]
+
 
 def main():
     s = Solution()
-    print(s.alphabetBoardPath('leet'))
-    print(s.alphabetBoardPath('code'))
-    print(s.alphabetBoardPath('zb'))
-    print(s.alphabetBoardPath('zbz'))
+    test_suite = SolutionTesting(s)
+    test_suite.test_answers()
 
 
 if __name__ == "__main__":
