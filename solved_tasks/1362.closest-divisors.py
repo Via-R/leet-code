@@ -1,8 +1,9 @@
 from typing import List
 from math import sqrt
+from solutions_base.core import SolutionBase, SolutionTesting
 
 
-class Solution:
+class Solution(SolutionBase):
     def find_biggest_divisor(self, num, max_divisor=1):
         divisor = int(sqrt(num)) + 1
         if divisor ** 2 == num:
@@ -28,14 +29,15 @@ class Solution:
 
         return [-1, -1]
 
+    solver = closestDivisors
+    test_cases = [(8,), (123,), (999,), (1,), (688427155,)]
+    test_cases_answers = [([3, 3],), ([5, 25],), ([25, 40],), ([2, 1],), ([2409, 285773],)]
+
 
 def main():
     s = Solution()
-    print(s.closestDivisors(8))
-    print(s.closestDivisors(123))
-    print(s.closestDivisors(999))
-    print(s.closestDivisors(1))
-    print(s.closestDivisors(688427155))
+    test_suite = SolutionTesting(s)
+    test_suite.test_answers()
 
 
 if __name__ == "__main__":

@@ -1,4 +1,7 @@
-class Solution:
+from solutions_base.core import SolutionBase, SolutionTesting
+
+
+class Solution(SolutionBase):
     letter_values = {
         "I": 1,
         "V": 5,
@@ -25,3 +28,17 @@ class Solution:
             result += self.letter_values[s[idx]]
 
         return result
+
+    solver = romanToInt
+    test_cases = [('III',), ('LVIII',), ('MCMXCIV',)]
+    test_cases_answers = [(3,), (58,), (1994,)]
+
+
+def main():
+    s = Solution()
+    test_suite = SolutionTesting(s)
+    test_suite.test_answers()
+
+
+if __name__ == "__main__":
+    main()

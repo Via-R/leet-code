@@ -1,7 +1,8 @@
 from typing import List
+from solutions_base.core import SolutionBase, SolutionTesting
 
 
-class Solution:
+class Solution(SolutionBase):
 
     def getMaxLen(self, nums: List[int]) -> int:
         positive_product_length, negative_product_length = 0, 0
@@ -25,12 +26,15 @@ class Solution:
 
         return answer
 
+    solver = getMaxLen
+    test_cases = [([1, -2, -3, 4],), ([0, 1, -2, -3, -4],), ([-1, -2, -3, 0, 1],)]
+    test_cases_answers = [(4,), (3,), (2,)]
+
 
 def main():
     s = Solution()
-    print(s.getMaxLen([1, -2, -3, 4]))
-    print(s.getMaxLen([0, 1, -2, -3, -4]))
-    print(s.getMaxLen([-1, -2, -3, 0, 1]))
+    test_suite = SolutionTesting(s)
+    test_suite.test_answers()
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
 from functools import cache
+from solutions_base.core import SolutionBase, SolutionTesting
 
 
-class Solution:
+class Solution(SolutionBase):
     def longestPalindromeSubseq(self, s: str) -> int:
         @cache
         def rec(left_idx, right_idx):
@@ -16,11 +17,15 @@ class Solution:
 
         return rec(0, len(s) - 1)
 
+    solver = longestPalindromeSubseq
+    test_cases = [('bbbab',), ('cbbd',)]
+    test_cases_answers = [(4,), (2,)]
+
 
 def main():
     s = Solution()
-    print(s.longestPalindromeSubseq('bbbab'))
-    print(s.longestPalindromeSubseq('cbbd'))
+    test_suite = SolutionTesting(s)
+    test_suite.test_answers()
 
 
 if __name__ == "__main__":

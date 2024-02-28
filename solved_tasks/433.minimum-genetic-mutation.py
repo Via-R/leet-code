@@ -1,6 +1,9 @@
 from copy import copy
+from typing import Dict, List
+from solutions_base.core import SolutionBase, SolutionTesting
 
-class Solution:
+
+class Solution(SolutionBase):
     @staticmethod
     def findDistance(gene_a: str, gene_b: str) -> int:
         result = 0
@@ -32,3 +35,18 @@ class Solution:
             return -1
 
         return self.bfs({startGene: copy(bank)}, endGene, 0)
+
+    solver = minMutation
+    test_cases = [('AACCGGTT', 'AACCGGTA', ["AACCGGTA"]), ('AACCGGTT', 'AAACGGTA',
+                                                           ["AACCGGTA", "AACCGCTA", "AAACGGTA"])]
+    test_cases_answers = [(1,), (2,)]
+
+
+def main():
+    s = Solution()
+    test_suite = SolutionTesting(s)
+    test_suite.test_answers()
+
+
+if __name__ == "__main__":
+    main()

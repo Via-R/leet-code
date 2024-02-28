@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
+class Solution:  # TODO: adapt SolutionBase to this example and inherit from it here
     def deepestLeavesSum(self, root: Optional[TreeNode]) -> int:
         def bfs(nodes):
             next_nodes = []

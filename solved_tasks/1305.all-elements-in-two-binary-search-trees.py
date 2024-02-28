@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
+class Solution:  # TODO: adapt SolutionBase to this example and inherit from it here
     def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
         def dfs(node):
             if not node:

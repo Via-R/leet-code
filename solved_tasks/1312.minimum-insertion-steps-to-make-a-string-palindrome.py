@@ -1,7 +1,8 @@
 from functools import cache
+from solutions_base.core import SolutionBase, SolutionTesting
 
 
-class Solution:
+class Solution(SolutionBase):
     def minInsertions(self, s: str) -> int:
         @cache
         def rec(start_idx, end_idx):
@@ -13,14 +14,15 @@ class Solution:
 
         return rec(0, len(s) - 1)
 
+    solver = minInsertions
+    test_cases = [('zzazz',), ('mbadm',), ('leetcode',), ('zjveiiwvc',), ('tldjbqjdogipebqsohdypcxjqkrqltpgviqtqz',)]
+    test_cases_answers = [(0,), (2,), (5,), (5,), (25,)]
+
 
 def main():
     s = Solution()
-    print(s.minInsertions('zzazz'))
-    print(s.minInsertions('mbadm'))
-    print(s.minInsertions('leetcode'))
-    print(s.minInsertions("zjveiiwvc"))
-    print(s.minInsertions("tldjbqjdogipebqsohdypcxjqkrqltpgviqtqz"))
+    test_suite = SolutionTesting(s)
+    test_suite.test_answers()
 
 
 if __name__ == "__main__":
