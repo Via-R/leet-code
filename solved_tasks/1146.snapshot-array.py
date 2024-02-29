@@ -1,41 +1,42 @@
-from typing import Dict, List, Any, Union
+class SnapshotArray:
 
-ArrayNode = Union[Dict[str, Any], None]
-
-
-class SnapshotArray:  # TODO: adapt SolutionBase to this example and inherit from it here
     def __init__(self, length: int):
-        self.snap_count = 0
-        self.array_data: List[ArrayNode] = [None] * length
-        self.leaf_nodes: List[ArrayNode] = [None] * length
-        for i in range(length):
-            self.array_data[i] = {"curr_val": 0, "saved_val": 0, "snap_id": -1,
-                                  "next": {"curr_val": 0, "saved_val": 0}}
-            self.leaf_nodes[i] = self.array_data[i]["next"]
+        self.snapshots = []
+        self.current_array = [0] * length
+        self.changes_indexes = [[] for _ in range(length)]
 
     def set(self, index: int, val: int) -> None:
-        self.leaf_nodes[index]["curr_val"] = val
+        self.current_array[index] = val
 
     def snap(self) -> int:
-        for idx, node in enumerate(self.leaf_nodes):
-            if node["curr_val"] == node["saved_val"]:
+        snapshot = [None] * len(self.current_array)
+        new_snap_id = len(self.snapshots)
+        for idx, n in enumerate(self.current_array):
+            if len(self.snapshots) and self.snapshots[-1][idx] == n:
                 continue
-            node["saved_val"] = node["curr_val"]
-            node["snap_id"] = self.snap_count
-            node["next"] = {"curr_val": node["curr_val"], "saved_val": node["curr_val"]}
-            self.leaf_nodes[idx] = node["next"]
+            self.changes_indexes[idx].append(new_snap_id)
+            snapshot[idx] = n
+        self.snapshots.append(snapshot)
 
-        self.snap_count += 1
-        return self.snap_count - 1
+        return new_snap_id
 
     def get(self, index: int, snap_id: int) -> int:
-        curr_node = self.array_data[index]
+        if self.snapshots[snap_id][index] is not None:
+            return self.snapshots[snap_id][index]
 
-        while curr_node.get("next") and curr_node["next"].get("snap_id") is not None and curr_node["next"][
-            "snap_id"] <= snap_id:
-            curr_node = curr_node["next"]
+        changes_indexes = self.changes_indexes[index]
 
-        return curr_node["saved_val"]
+        if snap_id < changes_indexes[0]:
+            return 0
+
+        bs_bounds = (0, len(changes_indexes) - 1)
+        while bs_bounds[1] - bs_bounds[0] > 1:
+            middle_idx = len(bs_bounds) // 2
+
+            bs_bounds = (bs_bounds[0], middle_idx - 1) if snap_id < changes_indexes[middle_idx] else (
+            middle_idx, bs_bounds[1])
+
+        return self.snapshots[changes_indexes[bs_bounds[0]]][index]
 
 
 def main():
@@ -44,8 +45,6 @@ def main():
     obj.snap()
     obj.set(0, 6)
     print('Get array[0] (snap=0): ', obj.get(0, 0))
-
-
 
     # obj = SnapshotArray(1)
     # obj.snap()
