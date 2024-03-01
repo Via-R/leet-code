@@ -1,4 +1,4 @@
-class SnapshotArray:
+class SnapshotArray:  # TODO: adapt SolutionBase to this example and inherit from it here
 
     def __init__(self, length: int):
         self.array = [0] * length
