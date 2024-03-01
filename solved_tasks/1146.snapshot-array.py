@@ -1,29 +1,34 @@
-from copy import copy
 class SnapshotArray:
 
     def __init__(self, length: int):
-        self.snapshots = [[{"curr_val": 0, "saved_val": 0} for _ in range(length)]]
+        self.snapshots = [[{"val": 0}] * length]
+        self.length = length
+        self.snapshot_count = 0
 
     def set(self, index: int, val: int) -> None:
-        self.snapshots[-1][index]["curr_val"] = val
+        snapshots_length = len(self.snapshots)
+        while self.snapshot_count >= snapshots_length:
+            new_snapshot = [n for n in self.snapshots[-1]]
+            self.snapshots.append(new_snapshot)
+            snapshots_length = len(self.snapshots)
+
+        if snapshots_length > 1 and val != self.snapshots[-2][index]["val"]:
+            self.snapshots[-1][index] = {"val": val}
+        elif snapshots_length == 1:
+            self.snapshots[-1][index]["val"] = val
+        else:
+            self.snapshots[-1][index] = self.snapshots[-2][index]
 
     def snap(self) -> int:
-        new_snapshot = []
-        for idx, data in enumerate(self.snapshots[-1]):
-            if data["curr_val"] != data["saved_val"]:
-                new_data = {"curr_val": data["curr_val"], "saved_val": data["curr_val"]}
-                self.snapshots[-1][idx] = new_data
-                new_snapshot.append(new_data)
+        self.snapshot_count += 1
 
-            new_snapshot.append(data)
-
-        self.snapshots.append(new_snapshot)
-
-        return len(self.snapshots) - 2
+        return self.snapshot_count - 1
 
     def get(self, index: int, snap_id: int) -> int:
-        print(self.snapshots)
-        return self.snapshots[snap_id][index]["saved_val"]
+        if snap_id > len(self.snapshots) - 1:
+            return self.snapshots[-1][index]["val"]
+
+        return self.snapshots[snap_id][index]["val"]
 
 
 def main():
